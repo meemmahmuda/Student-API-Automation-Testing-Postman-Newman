@@ -117,15 +117,15 @@ The report is saved inside the `newman/` folder with a timestamped file name.
 ### Run with CLI output only
 
 ```bash
-newman run collection/Student.postman_collection.json \
-  -e environment/Student.postman_environment.json
+newman run Student.postman_collection.json \
+  -e Student.postman_environment.json
 ```
 
 ### Run with a dark theme report
 
 ```bash
-newman run collection/Student.postman_collection.json \
-  -e environment/Student.postman_environment.json \
+newman run Student.postman_collection.json \
+  -e Student.postman_environment.json \
   -r htmlextra \
   --reporter-htmlextra-darkTheme
 ```
@@ -137,7 +137,7 @@ newman run collection/Student.postman_collection.json \
 Open the generated file in any browser:
 
 ```
-reports/Student-2026-10-23-12-08-37-201-0.html
+newman/Student-2026-10-23-12-08-37-201-0.html
 ```
 
 The report includes:
@@ -147,13 +147,6 @@ The report includes:
 - List of failed tests with error messages
 - Per-request details: method, URL, headers, request body, response body and assertion results
 - Light and dark theme toggle
-
-### Optional: Host the report with GitHub Pages
-
-1. Move or copy the report to a `docs/` folder and rename it to `index.html`.
-2. In your repository go to **Settings > Pages**.
-3. Select the branch and the `/docs` folder, then save.
-4. The report will be available at `https://<username>.github.io/<repository>/`.
 
 ---
 
@@ -177,5 +170,5 @@ The report includes:
 
 ## Author
 
-**Your Name**
-GitHub: [@your-username](https://github.com/your-username)
+**meemmahmuda**
+GitHub: [@meemmahmuda](https://github.com/meemmahmuda)
