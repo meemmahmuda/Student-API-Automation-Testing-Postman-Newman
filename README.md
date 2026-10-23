@@ -107,10 +107,9 @@ newman --version
 Run the collection with the environment and generate the HTML report:
 
 ```bash
-newman run collection/Student.postman_collection.json \
-  -e environment/Student.postman_environment.json \
-  -r htmlextra \
-  --reporter-htmlextra-export reports/
+newman run Student.postman_collection.json
+  -e Student.postman_environment.json
+  -r htmlextra
 ```
 
 The report is saved inside the `reports/` folder with a timestamped file name.
