@@ -1,0 +1,333 @@
+{
+  "info": {
+    "_postman_id": "8821a0e3-9ddc-495a-899a-d7b5336b9798",
+    "name": "Student",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58696830"
+  },
+  "item": [
+    {
+      "name": "Get Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\n\r\n//Assertion for correct status code\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 1000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(1000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 15000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(15000);\r\n});\r\n\r\n// Assertion for data formate\r\npm.test(\"Verify that the response data is in json formate\", function () {\r\n    pm.response.to.have.jsonBody;\r\n});\r\n\r\n// Assertion for response body is an array\r\npm.test(\"Response body should be an array\", function () {\r\n    pm.expect(responsebody).to.be.an(\"array\");\r\n});\r\n\r\n//Assertion for reponsebody is not empty\r\npm.test(\"Response should not be empty\", function () {\r\n    pm.expect(responsebody.length).to.be.greaterThan(0);\r\n});\r\n\r\n// Assertion for booking id\r\npm.test(\"Every student should have id\", function () {\r\n    responsebody.forEach(function (student) {\r\n        pm.expect(student).to.have.property(\"id\");\r\n    });\r\n});\r\n\r\n// Verify required fields\r\npm.test(\"Every student should have all required fields\", function () {\r\n    responsebody.forEach(function (student) {\r\n        pm.expect(student).to.have.property(\"id\");\r\n        pm.expect(student).to.have.property(\"first_name\");\r\n        pm.expect(student).to.have.property(\"middle_name\");\r\n        pm.expect(student).to.have.property(\"last_name\");\r\n        pm.expect(student).to.have.property(\"date_of_birth\");\r\n\r\n    });\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Random First Name\r\nvar firstName = pm.variables.replaceIn('{{$randomNamePrefix}}');\r\npm.environment.set(\"fName\", firstName);\r\n\r\n// Random Middle Name\r\nvar middleName = pm.variables.replaceIn('{{$randomFirstName}}');\r\npm.environment.set(\"mName\", middleName);\r\n\r\n// Random Last Name\r\nvar lastName = pm.variables.replaceIn('{{$randomLastName}}');\r\npm.environment.set(\"lName\", lastName);\r\n\r\n// Random Date of Birth\r\nvar dob = pm.variables.replaceIn('{{$randomDatePast}}');\r\npm.environment.set(\"dateofbirth\", dob);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\npm.environment.set(\"id\",responsebody.id);\r\n\r\n\r\n// Assertion for status code\r\npm.test(\"Verify that Status code is 201 or not\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 500ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(500);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Assertion for first name\r\nvar responsebody = pm.response.json();\r\npm.test(\"Verify that the response first name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"fName\")).to.eql(responsebody.first_name);\r\n});\r\n\r\n// Assertion for middle name\r\nvar responsebody = pm.response.json();\r\npm.test(\"Verify that the response middle name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"mName\")).to.eql(responsebody.middle_name);\r\n});\r\n\r\n// Assertion for last name\r\npm.test(\"Verify that the response last name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"lName\")).to.eql(responsebody.last_name);\r\n});\r\n\r\n// Assertion for Date of birth\r\npm.test(\"Verify that the response date of birth is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"dateofbirth\")).to.eql(responsebody.date_of_birth);\r\n});\r\n\r\n// Assertion for firstname is string\r\npm.test(\"Verify first name is a string\", function () {\r\n    pm.expect(responsebody.first_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for middle name is string\r\npm.test(\"Verify middle name is a string\", function () {\r\n    pm.expect(responsebody.middle_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for lastname is string\r\npm.test(\"Verify last name is a string\", function () {\r\n    pm.expect(responsebody.last_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for date of birth is string\r\npm.test(\"Verify date of birth is a string\", function () {\r\n    pm.expect(responsebody.date_of_birth).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for response body is an object\r\npm.test(\"Verify response body is an object\", function () {\r\n    pm.expect(responsebody).to.be.an(\"object\");\r\n    pm.expect(responsebody).to.not.be.an(\"array\");\r\n});\r\n\r\n// Assertion for id is a number\r\npm.test(\"Verify ID is a number\", function () {\r\n    pm.expect(responsebody.id).to.be.a(\"number\");\r\n});\r\n\r\n// Assertion for first name is not empty\r\npm.test(\"Verify first name is not empty\", function () {\r\n    pm.expect(responsebody.first_name).to.not.equal(\"\");\r\n});\r\n\r\n// Assertion for middle name is not empty\r\npm.test(\"Verify middle name is not empty\", function () {\r\n    pm.expect(responsebody.middle_name).to.not.equal(\"\");\r\n});\r\n\r\n// Assertion for last name is not empty\r\npm.test(\"Verify last name is not empty\", function () {\r\n    pm.expect(responsebody.last_name).to.not.equal(\"\");\r\n});\r\n\r\n// Assertion for date of birth is not empty\r\npm.test(\"Verify date of birth is not empty\", function () {\r\n    pm.expect(responsebody.date_of_birth).to.not.equal(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"first_name\": \"{{fName}}\",\r\n  \"middle_name\": \"{{mName}}\",\r\n  \"last_name\": \"{{lName}}\",\r\n  \"date_of_birth\": \"{{dateofbirth}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Random First Name\r\nvar firstName = pm.variables.replaceIn('{{$randomNamePrefix}}');\r\npm.environment.set(\"fName\", firstName);\r\n\r\n// Random Middle Name\r\nvar middleName = pm.variables.replaceIn('{{$randomFirstName}}');\r\npm.environment.set(\"mName\", middleName);\r\n\r\n// Random Last Name\r\nvar lastName = pm.variables.replaceIn('{{$randomLastName}}');\r\npm.environment.set(\"lName\", lastName);\r\n\r\n// Random Date of Birth\r\nvar dob = pm.variables.replaceIn('{{$randomDatePast}}');\r\npm.environment.set(\"dateofbirth\", dob);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\n\r\n// Assertion for status code\r\npm.test(\"Verify that Status code is 200 or 403\", function () {\r\n    pm.expect(pm.response.code).to.be.oneOf([200, 403]);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 500ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(500);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Assertion for update status is true\r\npm.test(\"Verify update status is true\", function () {\r\n    pm.expect(responsebody.status).to.eql(\"true\");\r\n});\r\n\r\n// Assertion for success message is as expected\r\npm.test(\"Verify update success message\", function () {\r\n    pm.expect(responsebody.msg).to.eql(\"update  data success\");\r\n});\r\n\r\n// Assertion for response body is not empty\r\npm.test(\"Verify response body is not empty\", function () {\r\npm.expect(responsebody).to.not.be.empty;\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": {{id}},\n  \"first_name\": \"{{fName}}\",\n  \"middle_name\": \"{{mName}}\",\n  \"last_name\": \"{{lName}}\",\n  \"date_of_birth\": \"{{dateofbirth}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Assertion for status code\r\npm.test(\"Verify that Status code is 200 or not\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 15000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(15000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Assertion for first name\r\nvar responsebody = pm.response.json();\r\npm.test(\"Verify that the response first name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"fName\")).to.eql(responsebody.data.first_name);\r\n});\r\n\r\n// Assertion for middle name\r\nvar responsebody = pm.response.json();\r\npm.test(\"Verify that the response middle name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"mName\")).to.eql(responsebody.data.middle_name);\r\n});\r\n\r\n// Assertion for last name\r\npm.test(\"Verify that the response last name is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"lName\")).to.eql(responsebody.data.last_name);\r\n});\r\n\r\n// Assertion for checkin date\r\npm.test(\"Verify that the response date of birth is same as environment\", function () {\r\n    pm.expect(pm.environment.get(\"dateofbirth\")).to.eql(responsebody.data.date_of_birth);\r\n});\r\n\r\n// Assertion for Booking ID Matches the Requested ID\r\npm.test(\"Verify requested booking ID is valid\", function () {\r\n    var id = pm.environment.get(\"id\");\r\n    pm.expect(id).to.exist;\r\n    pm.expect(Number(id)).to.be.above(0);\r\n});\r\n\r\n// Assertion for all student field exist\r\npm.test(\"Verify all student fields exist\", function () {\r\n    pm.expect(responsebody.data).to.have.all.keys(\r\n        \"id\",\r\n        \"first_name\",\r\n        \"middle_name\",\r\n        \"last_name\",\r\n        \"date_of_birth\"\r\n    );\r\n});\r\n\r\n// Assertion for student id is number\r\npm.test(\"Verify student ID is a number\", function () {\r\n    pm.expect(responsebody.data.id).to.be.a(\"number\");\r\n});\r\n\r\n// Assertion for first name is string\r\npm.test(\"Verify first name is a string\", function () {\r\n    pm.expect(responsebody.data.first_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for middle name is string\r\npm.test(\"Verify middle name is a string\", function () {\r\n    pm.expect(responsebody.data.middle_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for last name is string\r\npm.test(\"Verify last name is a string\", function () {\r\n    pm.expect(responsebody.data.last_name).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for date of birth is string\r\npm.test(\"Verify date of birth is a string\", function () {\r\n    pm.expect(responsebody.data.date_of_birth).to.be.a(\"string\");\r\n});\r\n\r\n// Assertion for names are not empty\r\npm.test(\"Verify student names are not empty\", function () {\r\n    pm.expect(responsebody.data.first_name.trim()).to.not.eql(\"\");\r\n    pm.expect(responsebody.data.middle_name.trim()).to.not.eql(\"\");\r\n    pm.expect(responsebody.data.last_name.trim()).to.not.eql(\"\");\r\n    pm.expect(responsebody.data.date_of_birth.trim()).to.not.eql(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Technical Skills",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Random First language\r\nvar firstLanguage = pm.variables.replaceIn('{{$randomBsNoun}}');\r\npm.environment.set(\"fLanguage\", firstLanguage);\r\n\r\n// Random Second Language\r\nvar secondLanguage = pm.variables.replaceIn('{{$randomBsBuzz}}');\r\npm.environment.set(\"sLanguage\", secondLanguage);\r\n\r\n// Random Year Experience\r\nvar yexp = pm.variables.replaceIn('{{$randomSemver}}');\r\npm.environment.set(\"yearexperience\", yexp);\r\n\r\n// Random last used\r\nvar lused = pm.variables.replaceIn('{{$randomWeekday}}');\r\npm.environment.set(\"lastused\", lused);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\n\r\n// Assertion for status code\r\npm.test(\"Verify that Status code is 201 or not\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 5000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(5000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Assertion for response body is an object\r\npm.test(\"Verify response body is an object\", function () {\r\n    pm.expect(responsebody).to.be.an(\"object\");\r\n    pm.expect(responsebody).to.not.be.an(\"array\");\r\n});\r\n\r\n// Verify status is true\r\npm.test(\"Verify status is true\", function () {\r\npm.expect(responsebody.status).to.eql(\"true\");\r\n});\r\n\r\n// Verify success message\r\npm.test(\"Verify success message\", function () {\r\npm.expect(responsebody.msg).to.include(\"success\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": {{id}},\r\n    \"language\": [\r\n        \"{{fLanguage}}\",\r\n        \"{{sLanguage}}\"\r\n    ],\r\n    \"yearexp\": \"{{yearexperience}}\",\r\n    \"lastused\": \"{{lastused}}\",\r\n    \"st_id\": \"{{id}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{skill_url}}",
+          "host": [
+            "{{skill_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Student Address",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Random House Number\r\nvar houseNumber = pm.variables.replaceIn('{{$randomInt}}');\r\npm.environment.set(\"hNumber\", houseNumber);\r\n\r\n// Random City\r\nvar rcity = pm.variables.replaceIn('{{$randomCity}}');\r\npm.environment.set(\"city\", rcity);\r\n\r\n// Random State\r\nvar state = pm.variables.replaceIn('{{$randomStreetName}}');\r\npm.environment.set(\"state\", state);\r\n\r\n// Random Country\r\nvar country = pm.variables.replaceIn('{{$randomCountry}}');\r\npm.environment.set(\"country\", country);\r\n\r\n// Random Home Phone Number\r\nvar homePhone = pm.variables.replaceIn('{{$randomPhoneNumberExt}}');\r\npm.environment.set(\"homePhone\", homePhone);\r\n\r\n// Random Mobile Number\r\nvar mobileNumber = pm.variables.replaceIn('{{$randomPhoneNumber}}');\r\npm.environment.set(\"mobileNumber\", mobileNumber);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\n\r\n// Assertion for status code\r\npm.test(\"Verify that Status code is 201 or not\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\n// Assertion for time\r\npm.test(\"Verify that the response time is below 5000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(5000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Assertion for response body is an object\r\npm.test(\"Verify response body is an object\", function () {\r\n    pm.expect(responsebody).to.be.an(\"object\");\r\n    pm.expect(responsebody).to.not.be.an(\"array\");\r\n});\r\n\r\n// Verify status is true\r\npm.test(\"Verify status is true\", function () {\r\npm.expect(responsebody.status).to.eql(\"true\");\r\n});\r\n\r\n// Verify success message\r\npm.test(\"Verify success message\", function () {\r\npm.expect(responsebody.msg).to.include(\"success\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Permanent_Address\": { \r\n        \"House_Number\": \"{{hNumber}}\",\r\n        \"City\": \"{{city}}\",\r\n        \"State\": \"{{state}}\", \r\n        \"Country\": \"{{country}}\",\r\n        \"PhoneNumber\": [ \r\n            { \r\n            \"Std_Code\": \"+88\",\r\n            \"Home\": \"{{homePhone}}\",\r\n            \"Mobile\": \"{{mobileNumber}}\" \r\n            },\r\n            { \r\n            \"Std_Code\": \"+88\",\r\n            \"Home\": \"{{homePhone}}\", \r\n            \"Mobile\": \"{{mobileNumber}}\" \r\n            } \r\n        ] \r\n    },\r\n    \"stId\":  \"{{id}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{address_url}}/{{id}}",
+          "host": [
+            "{{address_url}}"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FINAL STUDENT DETAILS",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responseBody = pm.response.json();\r\n\r\n// Assertion for status code\r\npm.test(\"Verify status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// Assertion for response time\r\npm.test(\"Verify response time is below 5000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(5000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Verify that the response contains the correct data\r\npm.test(\"Verify response contains data\", function () {\r\n    pm.expect(responseBody).to.have.property(\"data\");\r\n    pm.expect(responseBody.data).to.be.an(\"object\");\r\n});\r\n\r\n// Verify first name is string\r\npm.test(\"Verify first_name is a string\", function () {\r\n    pm.expect(responseBody.data.first_name).to.be.a(\"string\");\r\n});\r\n\r\n// Verify middle name is string\r\npm.test(\"Verify middle_name is a string\", function () {\r\n    pm.expect(responseBody.data.middle_name).to.be.a(\"string\");\r\n});\r\n\r\n// Verify last name is string\r\npm.test(\"Verify last_name is a string\", function () {\r\n    pm.expect(responseBody.data.last_name).to.be.a(\"string\");\r\n});\r\n\r\n// Verify date of birth is string\r\npm.test(\"Verify date_of_birth is a string\", function () {\r\n    pm.expect(responseBody.data.date_of_birth).to.be.a(\"string\");\r\n});\r\n\r\n// Verify names are not empty\r\npm.test(\"Verify student name fields are not empty\", function () {\r\n    pm.expect(responseBody.data.first_name.trim()).to.not.equal(\"\");\r\n    pm.expect(responseBody.data.middle_name.trim()).to.not.equal(\"\");\r\n    pm.expect(responseBody.data.last_name.trim()).to.not.equal(\"\");\r\n});\r\n\r\n// Verify date of birth fields are not empty\r\npm.test(\"Verify date_of_birth is not empty\", function () {\r\n    pm.expect(responseBody.data.date_of_birth.trim()).to.not.equal(\"\");\r\n});\r\n\r\n// Verify TechnicalDetails is an array\r\npm.test(\"Verify TechnicalDetails is an array\", function () {\r\n    pm.expect(responseBody.data.TechnicalDetails).to.be.an(\"array\");\r\n});\r\n\r\n// Verify TechnicalDetails is not empty\r\npm.test(\"Verify TechnicalDetails is not empty\", function () {\r\n    pm.expect(responseBody.data.TechnicalDetails).to.have.length.above(0);\r\n});\r\n\r\n// Verify technical detail has required fields\r\npm.test(\"Verify each technical detail has required fields\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item).to.have.property(\"id\");\r\n        pm.expect(item).to.have.property(\"language\");\r\n        pm.expect(item).to.have.property(\"yearexp\");\r\n        pm.expect(item).to.have.property(\"lastused\");\r\n        pm.expect(item).to.have.property(\"st_id\");\r\n    });\r\n});\r\n\r\n// Verify technical detail ID is a number\r\npm.test(\"Verify technical detail ID is a number\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item.id).to.be.a(\"number\");\r\n    });\r\n});\r\n\r\n// Verify language array\r\npm.test(\"Verify language is an array\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item.language).to.be.an(\"array\");\r\n    });\r\n});\r\n\r\n// Verify language array contains strings.\r\npm.test(\"Verify language contains strings\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        item.language.forEach(function (language) {\r\n            pm.expect(language).to.be.a(\"string\");\r\n        });\r\n    });\r\n});\r\n\r\n// Verify yearexp is string\r\npm.test(\"Verify yearexp is a string\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item.yearexp).to.be.a(\"string\");\r\n    });\r\n});\r\n\r\n// Verify lastused is string\r\npm.test(\"Verify lastused is a string\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item.lastused).to.be.a(\"string\");\r\n    });\r\n});\r\n\r\n// Verify st_id is a string\r\npm.test(\"Verify st_id is a string\", function () {\r\n    responseBody.data.TechnicalDetails.forEach(function (item) {\r\n        pm.expect(item.st_id).to.be.a(\"string\");\r\n    });\r\n});\r\n\r\n// Verify address is array\r\npm.test(\"Verify Address is an array\", function () {\r\n    pm.expect(responseBody.data.Address).to.be.an(\"array\");\r\n});\r\n\r\n// Verify address id not empty\r\npm.test(\"Verify Address is not empty\", function () {\r\n    pm.expect(responseBody.data.Address).to.have.length.above(0);\r\n});\r\n\r\npm.test(\"Verify address contains Permanent_Address\", function () {\r\n    pm.expect(responseBody.data.Address[0])\r\n        .to.have.property(\"Permanent_Address\");\r\n});\r\n\r\npm.test(\"Verify address contains Current_Address\", function () {\r\n    pm.expect(responseBody.data.Address[0])\r\n        .to.have.property(\"Current_Address\");\r\n});\r\n\r\npm.test(\"Verify address contains stId\", function () {\r\n    pm.expect(responseBody.data.Address[0])\r\n        .to.have.property(\"stId\");\r\n});\r\n\r\nvar permanentAddress = responseBody.data.Address[0].Permanent_Address;\r\npm.test(\"Verify Permanent_Address is an object\", function () {\r\n    pm.expect(permanentAddress).to.be.an(\"object\");\r\n});\r\n\r\npm.test(\"Verify House_Number is a string\", function () {\r\n    pm.expect(permanentAddress.House_Number).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"Verify City is a string\", function () {\r\n    pm.expect(permanentAddress.City).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"Verify State is a string\", function () {\r\n    pm.expect(permanentAddress.State).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"Verify Country is a string\", function () {\r\n    pm.expect(permanentAddress.Country).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"Verify PhoneNumber is an array\", function () {\r\n    pm.expect(permanentAddress.PhoneNumber).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Verify PhoneNumber is not empty\", function () {\r\n    pm.expect(permanentAddress.PhoneNumber).to.have.length.above(0);\r\n});\r\n\r\npm.test(\"Verify each phone number has required fields\", function () {\r\n    permanentAddress.PhoneNumber.forEach(function (phone) {\r\n        pm.expect(phone).to.have.property(\"Std_Code\");\r\n        pm.expect(phone).to.have.property(\"Home\");\r\n        pm.expect(phone).to.have.property(\"Mobile\");\r\n    });\r\n});\r\n\r\npm.test(\"Verify phone number fields are strings\", function () {\r\n    permanentAddress.PhoneNumber.forEach(function (phone) {\r\n        pm.expect(phone.Std_Code).to.be.a(\"string\");\r\n        pm.expect(phone.Home).to.be.a(\"string\");\r\n        pm.expect(phone.Mobile).to.be.a(\"string\");\r\n    });\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{final_url}}/{{id}}",
+          "host": [
+            "{{final_url}}"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var responsebody = pm.response.json();\r\n\r\n// Assertion for status code\r\npm.test(\"Verify status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// Assertion for response time\r\npm.test(\"Verify response time is below 5000ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(5000);\r\n});\r\n\r\n// Assertion for size\r\npm.test(\"Verify that the response size is below 1000B\", function () {\r\n    pm.expect(pm.response.responseSize).to.be.below(1000);\r\n});\r\n\r\n// Verify status is true\r\npm.test(\"Verify status is true\", function () {\r\npm.expect(responsebody.status).to.eql(\"true\");\r\n});\r\n\r\n// Verify success message\r\npm.test(\"Verify success message\", function () {\r\npm.expect(responsebody.msg).to.include(\"success\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
