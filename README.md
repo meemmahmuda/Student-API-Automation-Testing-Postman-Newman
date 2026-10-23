@@ -112,7 +112,7 @@ newman run Student.postman_collection.json
   -r htmlextra
 ```
 
-The report is saved inside the `reports/` folder with a timestamped file name.
+The report is saved inside the `newman/` folder with a timestamped file name.
 
 ### Run with CLI output only
 
