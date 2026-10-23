@@ -81,8 +81,6 @@ Each request has test scripts that validate:
 └── README.md
 ```
 
-> Adjust the folder and file names to match your repository.
-
 ---
 
 ## Prerequisites
