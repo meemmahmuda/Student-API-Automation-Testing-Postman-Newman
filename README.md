@@ -74,11 +74,9 @@ Each request has test scripts that validate:
 
 ```
 .
-├── collection/
-│   └── Student.postman_collection.json
-├── environment/
-│   └── Student.postman_environment.json
-├── reports/
+│   ── Student.postman_collection.json
+│   ── Student.postman_environment.json
+├── newman/
 │   └── Student-2026-10-23-12-08-37-201-0.html
 └── README.md
 ```
