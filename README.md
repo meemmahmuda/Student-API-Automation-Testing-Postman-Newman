@@ -117,16 +117,16 @@ The report is saved inside the `newman/` folder with a timestamped file name.
 ### Run with CLI output only
 
 ```bash
-newman run Student.postman_collection.json \
+newman run Student.postman_collection.json
   -e Student.postman_environment.json
 ```
 
 ### Run with a dark theme report
 
 ```bash
-newman run Student.postman_collection.json \
-  -e Student.postman_environment.json \
-  -r htmlextra \
+newman run Student.postman_collection.json
+  -e Student.postman_environment.json
+  -r htmlextra
   --reporter-htmlextra-darkTheme
 ```
 
